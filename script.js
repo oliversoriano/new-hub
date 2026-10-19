@@ -9,6 +9,18 @@ const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
 const fmtInt = (n) => Number.parseInt(n, 10) || 0;
 const nowISO = () => new Date().toISOString();
 
+// Escapa texto digitado pelo usuário antes de inserir no HTML (evita XSS)
+const escapeHtml = (texto) => String(texto ?? "").replace(/[&<>"']/g, (c) =>
+  ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+function formatDate(iso) {
+  const d = new Date(iso);
+  const pad = n => String(n).padStart(2, "0");
+  return `${pad(d.getDate())}/${pad(d.getMonth() + 1)}/${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+}
+
+const TIPO_LABEL = { entrada: "Entrada", saida: "Saída" };
+
 // ---------- Storage ----------
 const LS_KEYS = {
   products: "newhub_products",
@@ -42,7 +54,7 @@ async function apiLogin(user, pass) {
 }
 
 (function requireAuthForPages() {
-  const protectedPages = ["produtos.html", "conferencia.html"];
+  const protectedPages = ["produtos.html", "conferencia.html", "relatorio.html"];
   const currentPage = location.pathname.split("/").pop().toLowerCase();
   if (protectedPages.includes(currentPage) && !isLoggedIn()) {
     location.href = "login.html";
@@ -92,15 +104,19 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 })();
 
-// // Seed opcional (comente se não quiser)
-// if(loadProducts().length === 0){
-//   saveProducts([
-//     {id: crypto.randomUUID(), name:"Camiseta Preta", ref:"REF-001", stock:12, active:true},
-//     {id: crypto.randomUUID(), name:"Calça Jeans", ref:"REF-002", stock:0, active:true},
-//     {id: crypto.randomUUID(), name:"Tênis Runner", ref:"REF-003", stock:4, active:true},
-//     {id: crypto.randomUUID(), name:"Moletom Cinza", ref:"REF-004", stock:22, active:false},
-//   ]);
-// }
+// Dados de exemplo: carregados só na primeira visita, para a demonstração não começar vazia
+if (localStorage.getItem(LS_KEYS.products) === null) {
+  saveProducts([
+    { id: crypto.randomUUID(), name: "Camiseta Preta", ref: "REF-001", stock: 12, active: true },
+    { id: crypto.randomUUID(), name: "Calça Jeans", ref: "REF-002", stock: 0, active: true },
+    { id: crypto.randomUUID(), name: "Tênis Runner", ref: "REF-003", stock: 4, active: true },
+    { id: crypto.randomUUID(), name: "Moletom Cinza", ref: "REF-004", stock: 22, active: false },
+  ]);
+}
+
+/** Verifica se já existe outro produto com a mesma referência. */
+const refEmUso = (ref, ignorarId = null) =>
+  loadProducts().some(p => p.ref.toLowerCase() === ref.toLowerCase() && p.id !== ignorarId);
 
 // =====================================================
 // Página de Produtos
@@ -165,6 +181,7 @@ document.addEventListener("DOMContentLoaded", () => {
       active: true
     };
     if (!newProd.name || !newProd.ref) return;
+    if (refEmUso(newProd.ref)) { alert("Já existe um produto com esta referência."); inputRef.focus(); return; }
     products.push(newProd);
     saveProducts(products);
     closeModal(overlayCreate, modalCreate);
@@ -187,6 +204,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const id = editId.value;
     const idx = products.findIndex(p => p.id === id);
     if (idx < 0) return;
+    if (refEmUso(editRef.value.trim(), id)) { alert("Já existe um produto com esta referência."); editRef.focus(); return; }
     products[idx].name = editName.value.trim();
     products[idx].ref = editRef.value.trim();
     products[idx].stock = fmtInt(editStock.value);
@@ -276,8 +294,8 @@ document.addEventListener("DOMContentLoaded", () => {
         <div class="left">
           ${zeroStockIcon}
           <div>
-            <div class="name">${p.name}</div>
-            <div class="meta">Ref: <b>${p.ref}</b> • Estoque: <b>${p.stock}</b></div>
+            <div class="name">${escapeHtml(p.name)}</div>
+            <div class="meta">Ref: <b>${escapeHtml(p.ref)}</b> • Estoque: <b>${p.stock}</b></div>
           </div>
         </div>
         <div class="right">
@@ -378,7 +396,8 @@ document.addEventListener("DOMContentLoaded", () => {
     // registra movimento
     moves.push({
       id: crypto.randomUUID(),
-      type, ref,
+      type,
+      ref: products[idx].ref,
       name: products[idx].name,
       qty,
       at: nowISO()
@@ -417,12 +436,6 @@ document.addEventListener("DOMContentLoaded", () => {
     pagEl.appendChild(next);
   }
 
-  function formatDate(iso) {
-    const d = new Date(iso);
-    const pad = n => String(n).padStart(2, "0");
-    return `${pad(d.getDate())}/${pad(d.getMonth() + 1)}/${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
-  }
-
   function render() {
     moves = loadMoves().sort((a, b) => b.at.localeCompare(a.at)); // recentes primeiro
 
@@ -437,10 +450,10 @@ document.addEventListener("DOMContentLoaded", () => {
       item.className = "item";
       item.innerHTML = `
         <div class="left">
-          <div class="badge ${m.type === 'entrada' ? 'green' : 'red'}">${m.type === 'entrada' ? 'Entrada' : 'Saída'}</div>
+          <div class="badge ${m.type === 'entrada' ? 'green' : 'red'}">${TIPO_LABEL[m.type]}</div>
           <div>
-            <div class="name">${m.name ?? ''}</div>
-            <div class="meta">Ref: <b>${m.ref}</b> • Qtd: <b>${m.qty}</b> • ${formatDate(m.at)}</div>
+            <div class="name">${escapeHtml(m.name)}</div>
+            <div class="meta">Ref: <b>${escapeHtml(m.ref)}</b> • Qtd: <b>${m.qty}</b> • ${formatDate(m.at)}</div>
           </div>
         </div>
       `;
@@ -467,16 +480,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let filtered = [];
 
-  function formatDate(iso) {
-    const d = new Date(iso);
-    const pad = n => String(n).padStart(2, "0");
-    return `${pad(d.getDate())}/${pad(d.getMonth() + 1)}/${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
-  }
-
   function applyFilters() {
     const moves = loadMoves();
     const start = inputStart.value ? new Date(inputStart.value) : null;
-    const end = inputEnd.value ? new Date(inputEnd.value) : null;
+    // + 59,999 s para incluir as movimentações feitas dentro do minuto final escolhido
+    const end = inputEnd.value ? new Date(new Date(inputEnd.value).getTime() + 59999) : null;
     const type = selType.value;
 
     filtered = moves.filter(m => {
@@ -501,10 +509,10 @@ document.addEventListener("DOMContentLoaded", () => {
       item.className = "item";
       item.innerHTML = `
         <div class="left">
-          <div class="badge ${m.type === 'entrada' ? 'green' : 'red'}">${m.type}</div>
+          <div class="badge ${m.type === 'entrada' ? 'green' : 'red'}">${TIPO_LABEL[m.type]}</div>
           <div>
-            <div class="name">${m.name ?? ""}</div>
-            <div class="meta">Ref: <b>${m.ref}</b> • Qtd: <b>${m.qty}</b> • ${formatDate(m.at)}</div>
+            <div class="name">${escapeHtml(m.name)}</div>
+            <div class="meta">Ref: <b>${escapeHtml(m.ref)}</b> • Qtd: <b>${m.qty}</b> • ${formatDate(m.at)}</div>
           </div>
         </div>
       `;
@@ -524,7 +532,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const rows = filtered.map(m => [
       formatDate(m.at),
-      m.type,
+      TIPO_LABEL[m.type],
       m.ref,
       m.name ?? "",
       m.qty
@@ -540,5 +548,6 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   btnApply?.addEventListener("click", applyFilters);
+  applyFilters(); // já mostra todas as movimentações ao abrir a página
 
 })();
