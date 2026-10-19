@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>NewHub • Conferência</title>
+  <link rel="icon" href="img/logo.png" type="image/x-icon">
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <header class="app-header">
+    <div class="container">
+      <div class="brand">
+        <img src="img/logo.png" alt="" class="logo-circle">
+        <div class="brand-text">
+          <h1>NewHub</h1>
+          <span class="subtitle">Conferência de Estoque</span>
+        </div>
+      </div>
+      <nav class="main-nav">
+        <a href="index.html">Início</a>
+        <a href="produtos.html">Produtos</a>
+        <a href="conferencia.html" class="active">Conferência</a>
+        <a href="login.html" id="authLink">Entrar</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container page">
+    <div class="page-header">
+      <h2>Conferência</h2>
+      <button id="btnOpenCreateMove" class="btn primary">+ Criar Movimentação</button>
+    </div>
+
+    <section id="movesList" class="list"></section>
+    <div id="movesPagination" class="pagination"></div>
+  </main>
+
+  <!-- Overlay/Modal: Criar Movimentação -->
+  <div class="overlay" id="overlayCreateMove"></div>
+  <div class="modal" id="modalCreateMove" role="dialog" aria-modal="true" aria-labelledby="createMoveTitle">
+    <div class="modal-header">
+      <h3 id="createMoveTitle">Nova Movimentação</h3>
+      <button class="icon-btn" id="closeCreateMove" aria-label="Fechar">×</button>
+    </div>
+    <form id="createMoveForm" class="modal-body">
+      <div class="field">
+        <label for="moveType">Tipo</label>
+        <select id="moveType">
+          <option value="saida" selected>Saída</option>
+          <option value="entrada">Entrada</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="moveRef">Referência </label>
+        <input id="moveRef" type="text" autocomplete="off" required /> <br>
+        <small id="moveProdHint" class="hint"></small>
+      </div>
+      <div class="field">
+        <label for="moveQty">Quantidade</label>
+        <input id="moveQty" type="number" min="1" required />
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn ghost" id="cancelCreateMove">Cancelar</button>
+        <button type="submit" class="btn primary">Finalizar</button>
+      </div>
+    </form>
+  </div>
+
+  <footer class="app-footer">
+    <div class="container">
+      <span>© 2025 NewHub</span>
+    </div>
+  </footer>
+</body>
+</html>

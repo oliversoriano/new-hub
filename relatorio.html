@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NewHub • Relatório</title>
+  <link rel="icon" href="img/logo.png" type="image/x-icon">
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+  <!-- Lib para exportar PDF -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.1/jspdf.plugin.autotable.min.js"></script>
+</head>
+
+<body>
+  <header class="app-header">
+    <div class="container">
+      <div class="brand">
+        <img src="img/logo.png" alt="" class="logo-circle">
+        <div class="brand-text">
+          <h1>NewHub</h1>
+          <span class="subtitle">Relatórios de Movimentações</span>
+        </div>
+      </div>
+      <nav class="main-nav">
+        <a href="index.html">Início</a>
+        <a href="produtos.html">Produtos</a>
+        <a href="conferencia.html">Conferência</a>
+        <a href="relatorio.html" class="active">Relatório</a>
+        <a href="login.html" id="authLink">Entrar</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container page">
+    <div class="page-header">
+      <h2>Relatório de Movimentações</h2>
+    </div>
+
+    <!-- Filtros -->
+    <section class="filters">
+      <div class="field">
+        <label for="filterStart">Data/Hora Inicial</label>
+        <input id="filterStart" type="datetime-local">
+      </div>
+      <div class="field">
+        <label for="filterEnd">Data/Hora Final</label>
+        <input id="filterEnd" type="datetime-local">
+      </div>
+      <div class="field">
+        <label for="filterType">Tipo</label>
+        <select id="filterType">
+          <option value="all">Todos</option>
+          <option value="entrada">Entrada</option>
+          <option value="saida">Saída</option>
+        </select>
+      </div>
+      <div class="field actions">
+        <button id="btnApplyReport" class="btn">Aplicar</button>
+        <button id="btnExportPdf" class="btn primary">Exportar PDF</button>
+      </div>
+    </section>
+
+    <!-- Resultados -->
+    <section id="reportList" class="list"></section>
+  </main>
+
+  <footer class="app-footer">
+    <div class="container">
+      <span>© 2025 NewHub</span>
+    </div>
+  </footer>
+</body>
+
+</html>

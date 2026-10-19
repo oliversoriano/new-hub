@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>NewHub • Produtos</title>
+  <link rel="icon" href="img/logo.png" type="image/x-icon">
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <header class="app-header">
+    <div class="container">
+      <div class="brand">
+        <img src="img/logo.png" alt="" class="logo-circle">
+        <div class="brand-text">
+          <h1>NewHub</h1>
+          <span class="subtitle">Gestão de Produtos</span>
+        </div>
+      </div>
+      <nav class="main-nav">
+        <a href="index.html">Início</a>
+        <a href="produtos.html" class="active">Produtos</a>
+        <a href="conferencia.html">Conferência</a>
+        <a href="login.html" id="authLink">Entrar</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container page">
+    <div class="page-header">
+      <h2>Produtos</h2>
+      <button id="btnOpenCreateProduct" class="btn primary">+ Cadastrar Produto</button>
+    </div>
+
+    <section class="filters">
+      <div class="field">
+        <label for="filterName">Nome</label>
+        <input id="filterName" type="text" placeholder="Ex.: Camiseta Polo">
+      </div>
+      <div class="field">
+        <label for="filterRef">Referência</label>
+        <input id="filterRef" type="text" placeholder="Ex.: REF-001">
+      </div>
+      <div class="field">
+        <label for="filterStatus">Status</label>
+        <select id="filterStatus">
+          <option value="all" >Todos</option>
+          <option value="active" selected>Ativo</option>
+          <option value="inactive">Inativo</option>
+        </select>
+      </div>
+      <div class="field actions">
+        <button id="btnApplyFilters" class="btn">Aplicar</button>
+        <button id="btnClearFilters" class="btn ghost">Limpar</button>
+      </div>
+    </section>
+
+    <section id="productsList" class="list"></section>
+    <div id="productsPagination" class="pagination"></div>
+  </main>
+
+  <!-- Overlay/Modal: Criar Produto -->
+  <div class="overlay" id="overlayCreateProduct"></div>
+  <div class="modal" id="modalCreateProduct" role="dialog" aria-modal="true" aria-labelledby="createProductTitle">
+    <div class="modal-header">
+      <h3 id="createProductTitle">Cadastrar Produto</h3>
+      <button class="icon-btn" id="closeCreateProduct" aria-label="Fechar">×</button>
+    </div>
+    <form id="createProductForm" class="modal-body">
+      <div class="field">
+        <label for="prodName">Nome</label>
+        <input id="prodName" type="text" required />
+      </div>
+      <div class="field">
+        <label for="prodRef">Referência</label>
+        <input id="prodRef" type="text" required />
+      </div>
+      <div class="field">
+        <label for="prodStock">Estoque</label>
+        <input id="prodStock" type="number" min="0" required />
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn ghost" id="cancelCreateProduct">Cancelar</button>
+        <button type="submit" class="btn primary">Salvar</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Overlay/Modal: Editar Produto -->
+  <div class="overlay" id="overlayEditProduct"></div>
+  <div class="modal" id="modalEditProduct" role="dialog" aria-modal="true" aria-labelledby="editProductTitle">
+    <div class="modal-header">
+      <h3 id="editProductTitle">Editar Produto</h3>
+      <button class="icon-btn" id="closeEditProduct" aria-label="Fechar">×</button>
+    </div>
+    <form id="editProductForm" class="modal-body">
+      <input type="hidden" id="editId" />
+      <div class="field">
+        <label for="editName">Nome</label>
+        <input id="editName" type="text" required />
+      </div>
+      <div class="field">
+        <label for="editRef">Referência</label>
+        <input id="editRef" type="text" required />
+      </div>
+      <div class="field">
+        <label for="editStock">Estoque</label>
+        <input id="editStock" type="number" min="0" required />
+      </div>
+      <div class="field">
+        <label for="editStatus">Status</label>
+        <select id="editStatus">
+          <option value="true">Ativo</option>
+          <option value="false">Inativo</option>
+        </select>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn ghost" id="cancelEditProduct">Cancelar</button>
+        <button type="submit" class="btn primary">Salvar</button>
+      </div>
+    </form>
+  </div>
+
+  <footer class="app-footer">
+    <div class="container">
+      <span>© 2025 NewHub</span>
+    </div>
+  </footer>
+</body>
+</html>

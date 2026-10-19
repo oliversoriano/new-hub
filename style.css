@@ -1,0 +1,422 @@
+/* ============ Base ============ */
+:root {
+  --bg: #0b1220;
+  --card: #121a2b;
+  --muted: #7e8aa3;
+  --text: #eaf0ff;
+  --brand: #5b8cff;
+  --brand-600: #3d6aff;
+  --border: #1f2a44;
+  --green: #33d69f;
+  --red: #ff6b6b;
+  --warning: #f5c842;
+}
+
+* {
+  box-sizing: border-box
+}
+
+html,
+body {
+  height: 100%
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Helvetica Neue", Arial;
+  color: var(--text);
+  background: linear-gradient(180deg, #0b1220 0%, #0e1629 60%, #0b1220 100%);
+}
+
+/* ============ Layout ============ */
+.container {
+  width: min(1100px, 92%);
+  margin: 0 auto
+}
+
+.app-header {
+  border-bottom: 1px solid var(--border);
+  background: rgba(11, 18, 32, .6);
+  backdrop-filter: blur(8px);
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+
+.app-header .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 0;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: .8rem
+}
+
+.logo-circle {
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+}
+
+.brand-text h1 {
+  font-size: 1.1rem;
+  margin: 0
+}
+
+.brand-text .subtitle {
+  font-size: .8rem;
+  color: var(--muted)
+}
+
+.main-nav a {
+  color: var(--text);
+  text-decoration: none;
+  padding: .6rem .9rem;
+  border-radius: .6rem;
+}
+
+.main-nav a:hover {
+  background: rgba(91, 140, 255, .1)
+}
+
+.main-nav a.active {
+  background: rgba(91, 140, 255, .2);
+  border: 1px solid var(--border)
+}
+
+.app-footer {
+  border-top: 1px solid var(--border);
+  padding: 1rem 0;
+  margin-top: 3rem;
+  color: var(--muted)
+}
+
+/* ============ Hero ============ */
+.hero {
+  padding: 4rem 0 3rem
+}
+
+.hero h2 {
+  font-size: 2rem;
+  margin: .2rem 0 1rem
+}
+
+.hero p {
+  color: var(--muted);
+  max-width: 680px
+}
+
+.cta {
+  display: flex;
+  gap: .8rem;
+  margin-top: 1.2rem
+}
+
+/* ============ Buttons ============ */
+.btn {
+  background: #1b2742;
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: .7rem 1rem;
+  border-radius: .8rem;
+  cursor: pointer
+}
+
+.btn:hover {
+  filter: brightness(1.1)
+}
+
+.btn.primary {
+  background: linear-gradient(135deg, var(--brand), var(--brand-600));
+  border: none
+}
+
+.btn.ghost {
+  background: transparent;
+  border: 1px solid var(--border)
+}
+
+.icon-btn {
+  background: transparent;
+  border: none;
+  color: var(--text);
+  font-size: 1.4rem;
+  cursor: pointer
+}
+
+/* ============ Page Header ============ */
+.page {
+  padding: 2rem 0
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem
+}
+
+/* ============ Filters ============ */
+.filters {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  background: var(--card);
+  border: 1px solid var(--border);
+  padding: 1rem;
+  border-radius: 1rem;
+  margin: 1rem 0 1.2rem
+}
+
+.filters .field {
+  display: flex;
+  flex-direction: column;
+  gap: .35rem
+}
+
+.filters .field input,
+.filters .field select {
+  background: #0f1a31;
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: .6rem;
+  padding: .7rem .8rem;
+  outline: none;
+}
+
+.filters .actions {
+  align-self: end;
+  display: flex;
+  gap: .6rem
+}
+
+/* ============ List ============ */
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: .8rem
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  padding: 1rem;
+}
+
+.item .left {
+  display: flex;
+  align-items: center;
+  gap: .9rem
+}
+
+.badge {
+  padding: .25rem .5rem;
+  border-radius: .5rem;
+  font-size: .78rem;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  background: #0f1a31
+}
+
+.badge.green {
+  color: #0fd6a8;
+  border-color: #0fd6a8
+}
+
+.badge.red {
+  color: #ff7a7a;
+  border-color: #ff7a7a
+}
+
+.name {
+  font-weight: 600
+}
+
+.meta {
+  color: var(--muted);
+  font-size: .9rem
+}
+
+.actions {
+  display: flex;
+  gap: .5rem
+}
+
+.alert-icon {
+  width: 18px;
+  height: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: .2rem
+}
+
+.alert-icon svg {
+  display: block
+}
+
+/* ============ Pagination ============ */
+.pagination {
+  display: flex;
+  gap: .5rem;
+  justify-content: flex-end;
+  margin-top: 1rem
+}
+
+.pagination .page-btn {
+  background: #0f1a31;
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: .45rem .7rem;
+  border-radius: .5rem;
+  cursor: pointer;
+}
+
+.pagination .page-btn.active {
+  background: var(--brand);
+  border: none
+}
+
+.pagination .page-btn:disabled {
+  opacity: .5;
+  cursor: not-allowed
+}
+
+/* ============ Modal ============ */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, .45);
+  opacity: 0;
+  pointer-events: none;
+  transition: .2s;
+  z-index: 80;
+}
+
+.modal {
+  position: fixed;
+  left: 50%;
+  top: 52%;
+  transform: translate(-50%, -48%);
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  width: min(520px, 92%);
+  opacity: 0;
+  pointer-events: none;
+  transition: .2s;
+  z-index: 90;
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1rem .5rem
+}
+
+.modal-body {
+  padding: 0 1rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: .8rem
+}
+
+.modal .field input,
+.modal .field select {
+  background: #0f1a31;
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: .6rem;
+  padding: .7rem .8rem;
+  outline: none;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: .6rem;
+  padding: .5rem 1rem 1rem
+}
+
+.overlay.show {
+  opacity: 1;
+  pointer-events: auto
+}
+
+.modal.show {
+  opacity: 1;
+  pointer-events: auto
+}
+
+/* ============ Responsive ============ */
+@media (max-width: 760px) {
+  .filters {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .page-header {
+    flex-direction: column;
+    align-items: stretch
+  }
+
+  .actions {
+    flex-wrap: wrap
+  }
+}
+
+
+/* ============ Auth (Login) ============ */
+.auth-wrapper {
+  min-height: calc(100vh - 160px);
+  display: grid;
+  place-items: center;
+}
+
+.auth-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  width: min(420px, 92%);
+  padding: 1rem;
+}
+
+.login-form .field {
+  display: flex;
+  flex-direction: column;
+  gap: .35rem;
+}
+
+.login-form .field input {
+  background: #0f1a31;
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: .6rem;
+  padding: .7rem .8rem;
+  outline: none;
+}
+
+.login-form .actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: .3rem;
+  gap: .6rem;
+}
+
+.error-msg {
+  color: var(--red);
+  margin-top: .6rem;
+}
